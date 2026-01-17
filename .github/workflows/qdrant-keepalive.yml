@@ -1,9 +1,0 @@
-- name: Ping Qdrant
-  run: |
-    set -euo pipefail
-    URL="${{ secrets.QDRANT_URL }}"
-    COL="${{ secrets.QDRANT_COLLECTION }}"
-    curl -sS -f "${URL%/}/collections/${COL#/}" \
-      -H "Authorization: Bearer ${{ secrets.QDRANT_TOKEN }}" \
-      > /dev/null
-
