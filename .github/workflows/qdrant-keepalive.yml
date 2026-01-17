@@ -1,18 +1,9 @@
-name: Qdrant keepalive
+- name: Ping Qdrant
+  run: |
+    set -euo pipefail
+    URL="${{ secrets.QDRANT_URL }}"
+    COL="${{ secrets.QDRANT_COLLECTION }}"
+    curl -sS -f "${URL%/}/collections/${COL#/}" \
+      -H "Authorization: Bearer ${{ secrets.QDRANT_TOKEN }}" \
+      > /dev/null
 
-on:
-  schedule:
-    - cron: "0 */12 * * *"   # ogni 12 ore (UTC)
-  workflow_dispatch:          # pulsante manuale
-
-jobs:
-  ping:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Ping Qdrant
-        run: |
-          set -euo pipefail
-          curl -sS -f \
-            "${{ secrets.QDRANT_URL }}/collections/${{ secrets.QDRANT_COLLECTION }}" \
-            -H "Authorization: Bearer ${{ secrets.QDRANT_TOKEN }}" \
-            > /dev/null
